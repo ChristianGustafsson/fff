@@ -1,14 +1,34 @@
 import { GoogleGenAI } from '@google/genai';
 
-export default async (req, res) => {
+export async function handler(event, context) {
   const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
   try {
+    const body = event.body ? JSON.parse(event.body) : {};
+    const prompt = body.prompt || 'Say hello from Gemini!';
     const response = await ai.models.generateContent({
       model: 'gemini-3-pro-preview',
-      contents: req.body.prompt || 'Say hello from Gemini!'
+      contents: prompt
     });
-    res.status(200).json({ result: response.text });
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      },
+      body: JSON.stringify({ result: response.text })
+    };
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return {
+      statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      },
+      body: JSON.stringify({ error: err.message })
+    };
   }
-};
+}
