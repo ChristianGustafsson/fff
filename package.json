@@ -1,0 +1,13 @@
+{
+  "name": "testr-project",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "Ny mapp/Index.js",
+  "scripts": {
+    "start": "node \"Ny mapp/Index.js\"",
+    "build": "echo 'No build step needed for Node.js app'"
+  },
+  "dependencies": {
+    "@google/genai": "*"
+  }
+}
