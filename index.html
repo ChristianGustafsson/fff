@@ -1,11 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Welcome</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GBFoods Nordics — Holographic Strategy Journey (Path to 100 M€)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #030812;
+      --cyan: #00f0ff;
+      --cyan-dim: rgba(0,240,255,0.4);
+      --cyan-glow: rgba(0,240,255,0.15);
+      --green: #00ff88;
+      --magenta: #ff00ff;
+      --white: #e0f4ff;
+      --muted: #4a7a8a;
+      --panel: rgba(0,0,0,0.62);
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Rajdhani', sans-serif;
+      background: radial-gradient(ellipse at 50% 20%, #030812 60%, #0a1a2f 100%);
+      color: var(--white);
+      overflow: hidden;
+    }
+    #space-bg {
+      position: fixed; inset: 0; z-index: 0;
+      background: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+      opacity: 0.18;
+      filter: blur(8px) brightness(0.7);
+    }
+    #stars {
+      position: fixed; inset: 0; z-index: 1;
+      pointer-events: none;
+    }
+    .holo-frame {
+      position: relative;
+      width: min(1180px, 92vw);
+      min-height: min(720px, 84vh);
+      margin: 60px auto;
+      padding: 3px;
+      background: linear-gradient(135deg, var(--cyan), var(--green), var(--cyan));
+      border-radius: 10px;
+      box-shadow: 0 0 60px var(--cyan-glow);
+      animation: borderPulse 3s ease-in-out infinite;
+    }
+    @keyframes borderPulse {
+      0%, 100% { box-shadow: 0 0 60px var(--cyan-glow); }
+      50% { box-shadow: 0 0 90px var(--cyan); }
+    }
+    .holo-inner {
+      background: rgba(3,8,18,0.92);
+      border-radius: 8px;
+      width: 100%;
+      height: 100%;
+      padding: clamp(22px, 3.5vw, 44px);
+      position: relative;
+      overflow: hidden;
+    }
+    .title {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      margin-top: 12px;
+      background: linear-gradient(90deg, var(--cyan), var(--green), var(--cyan));
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 4s ease-in-out infinite;
+      text-shadow: 0 0 40px var(--cyan-glow);
+    }
+    @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    .subtitle { font-size: 1.2rem; font-weight: 300; color: var(--muted); margin-top: 8px; line-height: 1.25; }
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.55rem;
+      color: var(--cyan);
+      text-shadow: 0 0 15px var(--cyan-dim);
+      margin-bottom: 14px;
+      letter-spacing: 0.06em;
+    }
+    .scanlines {
+      position: fixed; inset: 0; z-index: 2; pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+      animation: scanMove 8s linear infinite;
+    }
+    @keyframes scanMove { 0% { background-position: 0 0; } 100% { background-position: 0 100px; } }
+    .vignette {
+      position: fixed; inset: 0; z-index: 3; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.7) 100%);
+    }
+  </style>
 </head>
 <body>
-  <h1>Welcome to your site!</h1>
-  <p>This is your homepage. Customize it as you wish.</p>
+  <div id="space-bg"></div>
+  <canvas id="stars"></canvas>
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+  <div class="holo-frame">
+    <div class="holo-inner">
+      <div class="title">GBFoods Nordics 2026</div>
+      <div class="subtitle">Holographic Strategy Journey — Path to 100 M€</div>
+      <div class="section-title">Welcome to the Future</div>
+      <p>Experience a visually captivating, space-themed strategy journey. Explore data, insights, and generative AI content in a modern, interactive format.</p>
+      <!-- Add more advanced interactive and generative sections here -->
+    </div>
+  </div>
+  <script>
+    // Animated stars background
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+    const stars = Array.from({length: 120}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.2 + 0.3,
+      dx: (Math.random() - 0.5) * 0.15,
+      dy: (Math.random() - 0.5) * 0.15
+    }));
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const s of stars) {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(0,240,255,0.8)';
+        ctx.shadowColor = '#00f0ff';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        s.x += s.dx;
+        s.y += s.dy;
+        if (s.x < 0) s.x = canvas.width; if (s.x > canvas.width) s.x = 0;
+        if (s.y < 0) s.y = canvas.height; if (s.y > canvas.height) s.y = 0;
+      }
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+  </script>
 </body>
 </html>
